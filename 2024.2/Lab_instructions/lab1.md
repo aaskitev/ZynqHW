@@ -84,6 +84,7 @@ Vivado имеет большое количество готоых настро�
     ![Общая информация о проекте](./resources/lab1/New%20Project%20Summary.png)
 
 В результате появится интерфейс Vivado Design. Изучите доступные функции и ответьте на вопросы ниже.
+
     ![Интерфейс Vivado Design](./resources/lab1/Vivado%20Design%20Cockpit.png)
 
 ---
