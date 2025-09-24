@@ -39,26 +39,27 @@ Xilinx предоставляет широкий каталог IP-ядер, к�
 
     ![Создать новый IP](./resources/lab7/Create%20New%20IP.png)
 
-4. Нажмите **Next >** В приветственном окне.
+4. Нажмите кнопку **Next** в приветственном окне.
 
-5. Мы будем создавать новую AXI-периферию, поэтому отметьте пункт **Create a New AXI4 peripheral**. Нажмите **Next >**.
+5. Мы будем создавать новую AXI-периферию, поэтому отметьте пункт **Create a New AXI4 peripheral**. Нажмите кнопку **Next**.
+    ![Выбор создания новой AXI периферии](./resources/lab7/Create%20a%20New%20AXI%20Peripheral.png)
 
 6. Введите в соответствующие поля следующую информацию:
     * Name: `PWM_w_Int`
     * Version: `1.0`
     * Display name: `PWM_w_Int_v1.0`
     * Description: `PWM with Interrupt option`
-    * IP location: `C:/ZynqHW/2023.1/ip_repo`
+    * IP location: `U:/ZynqLabs/ip_repo`
 
-    Нажмите **Next >**.
+    Нажмите кнопку **Next**.
 
     ![Информация об IP](./resources/lab7/IP%20Details.png)
 
-7. Наша периферия достаточно проста и не требует большой пропускной способности шины, поэтому нам достаточно интерфейс AXI-Lite. Наше устройство также будет слейвом относительно *PS*, который будет мастером. Нам достаточно иметь 32 битный интерфейс. Для наших целей нам достаточно одного регистра, однако 4 - их минимальное количество. Таким образом, нам достаточно параметров **по-умолчанию**. Нажмите **Next >**.
+7. Создаваемая периферия достаточно проста и не требует большой пропускной способности шины, поэтому достаточно подключить интерфейс AXI-Lite. Устройство также будет ведомым (slave) относительно процессора (master). Для наших целей нам достаточно иметь 32 битный интерфейс и один регистр. Однако четыре - минимальное количество регистров. Таким образом, нам достаточно параметров **по-умолчанию**. Нажмите кнопку **Next**.
 
     ![Настройки интерфейса IP](./resources/lab7/IP%20Interface%20Settings.png)
 
-8. Выберите **Add IP to the repository**. Проверьте путь до каталога. Нажмите **Finish**.
+8. На последнем шаге выберите **Add IP to the repository**. Проверьте путь до каталога. Нажмите **Finish**.
 
     ![Итоги создания IP](./resources/lab7/IP%20Creation%20Summary.png)
 
@@ -68,7 +69,7 @@ Xilinx предоставляет широкий каталог IP-ядер, к�
 
 ## Эксперимент 2: Кастомизация нового IP-проекта
 
-Этот эксперимент покажет, как добавить кастомную пользовательскую логику и инстанцировать ее в IP-проект. Также мы кастомизируем наш IP-проект, добавив в него новый порт и параметры.
+Этот эксперимент покажет, как добавить пользовательскую логику в IP-ядро. Также мы изменим наше IP-ядро, добавив в него новый порт и параметры.
 
 ![Схема Дизайна](./resources/lab7/Design%20Scheme.png)
 
@@ -76,7 +77,7 @@ Xilinx предоставляет широкий каталог IP-ядер, к�
 
 ### **Обобщенная инструкция:**
 
-Импортируйте пользовательский код описания аппаратуры **PWM_Controller_Int.v** и инстанцируйте ее в проект. Соедините с **slv_reg0** из интерфейса AXI. соедините выходы *PWM* с модулем верхнего уровня.
+Импортируйте пользовательский код описания аппаратуры **PWM_Controller_Int.v** и подключите его в проект. Соедините с **slv_reg0** из интерфейса AXI. Соедините выходы *PWM* с модулем верхнего уровня.
 
 ---
 
@@ -92,97 +93,69 @@ Xilinx предоставляет широкий каталог IP-ядер, к�
 
     ![Имя и расположения проекта IP](./resources/lab7/IP%20Project%20Name%20and%20Location.png)
 
-    По завершению откроется новое окно *Vivado Project*. В этом новом окне мы будем редактировать на IP. Обратите внимание на корневой каталог (Root Directory) нашего проекта и его имя (Project Name). Это будет важно при дальнейшем выполнении работы. \<IP Name\>_project.xpr - проект, который будет открыт для редактирования IP. В нашем случае наш проект IP назван `PWM_w_Int_v1_0_project.xpr`.
+    По завершению откроется новое окно *Vivado Project*. В этом новом окне мы будем редактировать наше IP-ядро. Обратите внимание на корневой каталог (Root Directory) нашего проекта и его имя (Project Name). Это будет важно при дальнейшем выполнении работы. \<IP Name\>_project.xpr - проект, который будет открыт для редактирования IP. В нашем случае наш проект IP назван `PWM_w_Int_v1_0_project.xpr`.
 
 4. В окне *Sources* раскройте пункт **Design Sources**. Обратите внимание на то, что, когда мы в окне с исходниками выбираем файл, его свойства открываются в окне *Source File Properties*. Это полезно для определения того, где расположены файлы с HDL на вашем компьютере.
 
     ![Исходники и их свойства](./resources/lab7/Design%20Source%20Properties.png)
 
-5. Если у вас появилось предупреждение `[IP_Flow 19-11770] Clock interface 'S00_AXI_CLK' has no FREQ_HZ parameter.` Выполните следующие шаги:
 
-    1. Выберите поле *Ports and Interfaces*, которое помечено предупреждающим знаком. Далее раскройте **Clocks and Reset Signals->S00_AXI_CLK**. Нажмите правой кнопкой мыши на **S00_AXI_CLK** и выберите **Edit Interface...**
-
-        ![Починка ошибки FREQ_HZ](./resources/lab7/AXI%20warning%20resolve.png)
-
-    2. Во вкладке *Parameters* выберите пункт **Requires User Settings**. В нем выберите **FREQ_HZ**. Нажмите на стрелочку для переноса параметра.
-
-    ![Добавление параметра](./resources/lab7/Adding%20parameter.png)
-
-6. Вернемся к нашим исходникам. Мы видим два VHDL файла. Первый `PWM_w_Int_v1_0.vhd` - верхнеуровневый модуль-обертка. Откройте этот файл дважды **нажав** на него. В районе 84 строчки он инстанцирует интерфейс AXI `PWM_w_Int_v1_0_S00_AXI`, который определен в файле `PWM_w_Int_v1_0_S00_AXI.vhd`. Далее находится место для добавления пользовательской логики, куда мы и добавим логику нашего IP.
+5. В проекте присутствуют два Verilog файла. Первый `PWM_w_Int.v` - модуль-обертка верхнего уровня. Откройте этот файл дважды **нажав** на него. В районе 47 строчки он инстанцирует интерфейс AXI `PWM_w_Int_slave_lite_v1_0_S00_AXI`, который определен в файле `PWM_w_Int_slave_lite_v1_0_S00_AXI.v`. Далее находится место для добавления пользовательской логики, куда мы и добавим логику нашего IP.
 
     ![Расположение пользовательской логики](./resources/lab7/User%20Logic%20Location.png)
 
-7. Теперь скопируйте **PWM_Controller.v** из `2023.1/Support_documents` в `C:\ZynqHW\2023.1\ip_repo\PWM_w_Int_1_0\hdl`
+6. Теперь скопируйте **PWM_Controller.v** из папки `/Support_documents` в `U:\ZynqHW\ip_repo\PWM_w_Int_1_0\hdl`
 
-8. В области *Flow Navigator* выберите **Add Sources**. Далее выберите **Create Design Sources**. После завершения нажмите **Next>**.
+7. В области *Flow Navigator* выберите **Add Sources**. Далее выберите **Create Design Sources**. После завершения нажмите кнопку **Next**.
 
     ![Добавление исходника](./resources/lab7/Add%20Design%20Sources.png)
 
-9. В следующем окне выберите **Add Files**.
+8. В следующем окне выберите **Add Files**.
 
-10. Измените директорию на `C:\ZynqHW\2023.1\ip_repo\PWM_w_Int_1_0\hdl`. Нажмите дважды на **PWM_Controller_Int.v**, чтобы добавить его в проект.
+9. Измените директорию на `U:\ZynqHW\ip_repo\PWM_w_Int_1_0\hdl`. Нажмите дважды на **PWM_Controller_Int.v**, чтобы добавить его в проект.
 
-11. Проверьте файл. Также удостоверьтесь, что *Copy Sources into IP Directory* не отмечено галочкой. Нажмите **Finish**.
+10. Проверьте файл. Также удостоверьтесь, что *Copy Sources into IP Directory* не отмечено галочкой. Нажмите **Finish**.
 
     ![Добавление файла в проект](./resources/lab7/Add%20Files%20to%20Project.png)
 
-12. Теперь файл появится в нашем окне с исходниками. Но не внутри нашего файла верхнего уровня. Это ожидаемо, поскольку мы не инстанцировали этот код в файл верхнего уровня.
+11. Теперь файл появится в нашем окне с исходниками. Но не внутри нашего файла верхнего уровня. Это ожидаемо, поскольку мы не подключили этот код в файл верхнего уровня.
 
     ![Новый исходник в проекте](./resources/lab7/New%20Source%20in%20Project.png)
 
-13. Откройте **PWM_Controller_Int**, дважды нажав на него. Изучите файл и инстанцируйте этот модуль в **PWM_w_Int_v1_0.vhd**. Дважды нажмите на **PWM_w_Int_v1_0.vhd**, объявите компонент PWM_Controller_Int в секции объявления компонентов файла **PWM_w_Int_v1_0.vhd** в районе 52 строчки:
+12. Откройте **PWM_Controller_Int.v**. Изучите файл и инстанцируйте этот модуль в  `PWM_w_Int.v`. Дважды нажмите на  `PWM_w_Int.v`.
 
-    ```VHDL
-	    -- component declaration
-        component PWM_Controller_Int is
-	        generic (
-	        period : integer := 20
-	        );
-	        port (
-	        Clk : in std_logic;
-	        DutyCycle : in std_logic_vector(31 downto 0);
-	        Reset : in std_logic;
-	        PWM_out : out std_logic_vector(7 downto 0);
-	        Interrupt : out std_logic;
-	        count : out std_logic_vector(period - 1 downto 0)
-	        );
-	    end component PWM_Controller_Int;
+13. Внизу файла `PWM_w_Int.v` Добавьте следующий код в секцию пользовательской логики в районе 74 строчки между комментариями *Add user logic here* и *User logic ends*:
+
+    ```verilog
+	// Add user logic here
+    PWM_Controller_Int #(
+        .period     ()
+    ) PWM_Controller_Int_inst (
+        .Clk        (),
+        .DutyCycle  (), 
+        .Reset      (),
+        .PWM_out    (),
+        .Interrupt  (),
+        .count      ()
+    );
+	// User logic ends
     ```
 
-14. Внизу файла **PWM_w_Int_v1_0.vhd** Добавьте следующий код в секцию пользовательской логики в районе 130 строчки:
+    Нажмите сохранить. Это нормально, что текущий файл может показывать синтаксические ошибки - входы и выходы мы соединим позже.
 
-    ```VHDL
-    	-- Add user logic here
-    PWM_Controller_Int_Inst : PWM_Controller_Int
-        generic map (
-            period =>
-        )
-        port map (
-            Clk =>,
-            DutyCycle =>,
-            Reset =>,
-            PWM_out =>,
-            Interrupt =>,
-            count =>
-        );
-    	-- User logic ends
-    ```
-
-    Нажмите сохранить. Это нормально, что текущий файл показывает синтаксические ошибки, входы и выходы мы соединим позже.
-
-15. Как только мы ввели этот код, наш файл с кодом логики IP будет внутри верхнеуровнего файла
+14. Как только мы ввели этот код, наш файл с кодом логики IP будет внутри файла верхнего уровня
 
     ![Пользовательская логика тепеь в иерархии проекта](./resources/lab7/User%20Logic%20now%20in%20Project%20Hierarchy.png)
 
-    Следующие шаги покажут методологию соединения пользовательской логики с нашим IP.
+    Теперь необходимо подключить входы добавленной логики к существующей части IP-ядра.
 
-16. Сейчас нам нужно соединить входы и выходы нашей пользовательской логики. Начните с очевидных сигналов модуля пользовательской логики `PWM_Controller_Int`. Тактовые сигналы и сигналы сброса имеют прямую ассоциацию между сигналами контроллера и Slave AXI.
+15. Сейчас нам нужно соединить входы и выходы нашей пользовательской логики. Начните с очевидных сигналов модуля пользовательской логики `PWM_Controller_Int`. Тактовые сигналы и сигналы сброса имеют прямую ассоциацию между сигналами контроллера и Slave AXI.
     
-    ```VHDL
+    ```verilog
     ...
-    Clk => s00_axi_aclk,
+    .Clk        (s00_axi_aclk),
     ...
-    Reset => s00_axi_aresetn,
+    .Reset      (s00_axi_aresetn),
     ...
     ```
 
@@ -196,76 +169,62 @@ Xilinx предоставляет широкий каталог IP-ядер, к�
 
 17. Добавим следующие порты в самом верху файла с кодом (около 5 строчки) и пользовательскую HDL логику:
 
-    ```VHDL
-    entity PWM_w_Int_v1_0 is
-    	generic (
-    		-- Users to add parameters here
-            PWM_PERIOD : integer := 20;
-    		-- User parameters ends
-    		-- Do not modify the parameters beyond this line
+    ```verilog
+	module PWM_w_Int #
+	(
+		// Users to add parameters here
+        parameter integer PWM_PERIOD = 20,
+		// User parameters ends
+		// Do not modify the parameters beyond this line
 
-
-    		-- Parameters of Axi Slave Bus Interface S00_AXI
-    		C_S00_AXI_DATA_WIDTH	: integer	:= 32;
-    		C_S00_AXI_ADDR_WIDTH	: integer	:= 4
-    	);
-    	port (
-    		-- Users to add ports here
-            LEDs : out std_logic_vector(7 downto 0);
-            Interrupt_out : out std_logic;
-            PWM_Counter : out std_logic_vector(PWM_PERIOD - 1 downto 0);
-            DutyCycle : out std_logic_vector(31 downto 0);
-    		-- User ports ends
+		// Parameters of Axi Slave Bus Interface S00_AXI
+		parameter integer C_S00_AXI_DATA_WIDTH	= 32,
+		parameter integer C_S00_AXI_ADDR_WIDTH	= 4
+	)
+	(
+		// Users to add ports here
+        output wire [7:0]   LEDs,
+        output wire         Interrupt_out,
+        output wire [PWM_PERIOD-1:0] PWM_Counter,
+        output wire [31:0]  DutyCycle,
+		// User ports ends
+        ...
     ```
 
-    Добавим сигнал в районе 98-ой строчки:
+    Полное подключение `PWM_Controller_Int` в районе 78-ой строчки:
 
-    ```VHDL
-    	end component  PWM_w_Int_v1_0_S00_AXI;
-    signal DutyCycle_int : std_logic_vector(31 downto 0);
-
-    begin
-
-    DutyCycle <= DutyCycle_int;
-    -- Instantiation of Axi Bus Interface S00_AXI
-    ```
-
-    Полная пользовательская логика в районе 135-ой строчки:
-
-    ```VHDL
-    	-- Add user logic here
-    PWM_Controller_Int_Inst : PWM_Controller_Int
-        generic map (
-            period => PWM_PERIOD
-        )
-        port map (
-            Clk => s00_axi_aclk,
-            DutyCycle => DutyCycle_int,
-            Reset => s00_axi_aresetn,
-            PWM_out => LEDs,
-            Interrupt => Interrupt_Out,
-            count => PWM_Counter
-        );
-    	-- User logic ends
+    ```verilog
+	// Add user logic here
+    PWM_Controller_Int #(
+        .period     (PWM_PERIOD)
+    ) PWM_Controller_Int_inst (
+        .Clk        (s00_axi_aclk),
+        .DutyCycle  (DutyCycle), 
+        .Reset      (s00_axi_aresetn),
+        .PWM_out    (LEDs),
+        .Interrupt  (Interrupt_out),
+        .count      (PWM_Counter)
+    );
+	// User logic ends
     ```
 
     Таким образом, мы полностью подсоединили наш IP. Однако мы еще не соединили источник *DutyCycle*. Этот сигнал идет от процессора. К нашему удобству, для этих целей во время запуска *Create IP Peripheral wizard* Vivado создал для нас *AXI proxy*.
 
-18. Откройте **PWM_w_Int_v1_0_S00_AXI.vhd**. Просмотрите файл на строчках 100-197. Здесь вы увидите объяснения и определения для четырех регистров, созданных *Vivado*. Нам нужен только один из них - **slv_reg0**.
+18. Откройте **PWM_w_Int_slave_lite_v1_0_S00_AXI.v**. Просмотрите файл на строчках 105 и ниже. Здесь вы увидите объяснения для четырех регистров, созданных *Vivado*. Далее идет логика, реализующая операции записи и чтения в эти регистры. Нам нужен только один из них - **slv_reg0**.
 
 19. Сделаем *slv_reg0* выходом нашего модуля. В районе 19-ой строчки добавьте выход (**slave_reg0**, к примеру) в области для пользовательских портов. Затем соедините его с slv_reg0 (в районе 123 строчки):
 
-    ```VHDL
-    	port (
-		    -- Users to add ports here
-            slave_reg0 : out std_logic_vector(C_S_AXI_DATA_WIDTH - 1 downto 0);
-		    -- User ports ends
+    ```verilog
+		// Users to add ports here
+        output wire [C_S_AXI_ADDR_WIDTH-1 : 0]  slave_reg0,
+		// User ports ends
+        ...
     ```
 
-    ```VHDL
-    begin
-	    -- I/O Connections assignments
-        slave_reg0      <= slv_reg0;
+    ```verilog
+        // Add user logic here
+        assign slave_reg0 = slv_reg0;
+        // User logic ends
     ```
 
 20. **Сохраните** файл, нажав на **Ctrl-S**, и вернитесь обратно к файлу модуля верхнего уровня иерархии *PWM_w_Int_v1_0.vhd*.
@@ -461,3 +420,14 @@ Platform Project необходимо генерировать заново ка
 > Какого улучшение производительности при передачи 256 байт данных из BRAM в DDR3? Попробуйте с DDR3-DDR3? BRAM-BRAM?
 
 10x, 1x, 18x (результаты могут варьироваться)
+
+
+5. Если у вас появилось предупреждение `[IP_Flow 19-11770] Clock interface 'S00_AXI_CLK' has no FREQ_HZ parameter.` Выполните следующие шаги:
+
+    1. Выберите поле *Ports and Interfaces*, которое помечено предупреждающим знаком. Далее раскройте **Clocks and Reset Signals->S00_AXI_CLK**. Нажмите правой кнопкой мыши на **S00_AXI_CLK** и выберите **Edit Interface...**
+
+        ![Починка ошибки FREQ_HZ](./resources/lab7/AXI%20warning%20resolve.png)
+
+    2. Во вкладке *Parameters* выберите пункт **Requires User Settings**. В нем выберите **FREQ_HZ**. Нажмите на стрелочку для переноса параметра.
+
+    ![Добавление параметра](./resources/lab7/Adding%20parameter.png)
