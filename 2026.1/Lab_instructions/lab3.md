@@ -170,7 +170,7 @@
 
     ![Генерация выходных файлов](./resources/lab3/Generate%20Output%20Products.png)
 
-14. Убедитесь, что *Synthesis Options* установлен в **Global**. Нажмите **Generate**.
+14. Убедитесь, что *Synthesis Options* установлен в **Global**. Нажмите **Generate** и дождитесь окончания генерации.
 
 15. Выберите **Generate Bitstream**. Это перезапустит синтез и имплементацию. Если спросит, уверены ли вы, нажмите **Yes**. Дождитесь завершения процесса.
 
@@ -204,17 +204,15 @@
 
 3. В появившемся окне *Export Hardware Platform* нажмите кнопку **Next**. В следующем окне выберите **Include Bitstream** и нажмите кнопку **Next** в текущем и следующем окне. Затем нажмите кнопку **Finish**.
 
-    ![Экспорт hard](./resources/lab2/Export%20Hard.png)
+    ![Экспорт hard](./resources/lab3/Export%20Hardware%20Platform.png)
 
 4. В поле *Export to* введите `U:/ZynqLabs/ZynqDesign/ZynqDesign.lab3`. Нажмите **Next** и **Finish**.
 
-    ![Поменять имя](./resources/lab3/Launch%20SDK%20Dialog%20Box.png)
+    ![Поменять имя](./resources/lab3/Export%20Hardware%20Folder.png)
 
 5. Нажмите **Tools->Launch Vitis IDE**.
 
-6. Установите локацию *Workspace* на `U:\ZynqLabs\ZynqDesign\ZynqDesign.lab3\ZynqDesign.vitis`. Нажмите **Launch**.
-
-    ![Изменить воркспейс](./resources/lab3/Launch%20IDE%20Dialog%20box.png)
+6. Установите в качестве *Workspace* ~~`U:\ZynqLabs\ZynqDesign\ZynqDesign.lab3\ZynqDesign.vitis`~~ `С:\Users\<USER NAME>\ZynqDesign.lab3\ZynqDesign.vitis `.
 
 7. Создайте **Platform Component** и **Application Component** как мы это делали во второй лабораторной работе. В качестве проверки запустите *Hello_world*. При создании платформы выбирайте новый `.xsa` файл из директории `U:\ZynqLabs\ZynqDesign\ZynqDesign.lab3`.
 
