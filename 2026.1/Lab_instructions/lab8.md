@@ -267,23 +267,7 @@
     
     ![Запись в память](./resources/lab8/Updated%20BRAM%20contents.png)
 
-    `create_hw_axi_txn write_txn [get_hw_axis hw_axi_1] -type WRITE -address 43C00000 -len 1 -data 000A1220`
-
-    run_hw_axi [get_hw_axi_txns write_txn]
-
-    set_property DATA 000FFFFF [get_hw_axi_txns write_txn]
-
-    run_hw_axi [get_hw_axi_txns write_txn]
-
-    create_hw_axi_txn read_txn [get_hw_axis hw_axi_1] -type READ -address 40000000 -len 4
-
-    run_hw_axi [get_hw_axi_txns read_txn]
-
-    create_hw_axi_txn write_bram [get_hw_axis hw_axi_1] -type WRITE -address 40000000 -len 4 -data {44444444_33333333_22222222_11111111}
-
-    run_hw_axi [get_hw_axi_txns write_bram]
-
-    run_hw_axi [get_hw_axi_txns read_txn]
+    Подводя итог, отметим, что ядро ​​JTAG-to-AXI Master легко интегрируется в проект. Кроме того, с помощью команд TCL можно быстро и просто выполнять операции чтения и записи при взаимодействии с любым периферийным устройством (ведомым узлом) интерфейса AXI, используемым в проекте.
     
 
 
